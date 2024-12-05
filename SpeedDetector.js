@@ -1,31 +1,28 @@
-function SpeedDetector() {
-    let speed = parseInt(prompt("Enter the speed of the car (in km/h):"));
-    
-    // Validate the input
-    if (isNaN(speed) || speed < 0) {
-        console.log("Invalid input! Please enter a positive number for speed.");
-        return;
-    }
+const readline = require("readline");
 
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+
+function computespeedDetector(speed) {
     const speedLimit = 70;
-    let points = 0;
+    const demeritPointsLimit = 12;
 
-    // Check if speed is above the speed limit
-    if (speed > speedLimit) {
-        // Calculate the points based on every 5 km/h over the speed limit
-        points = Math.floor((speed - speedLimit) / 5);
-
-        // If the points are more than 12, the license gets suspended
-        if (points > 12) {
-            console.log("License suspended");
-        } else {
-            console.log(`Points: ${points}`);
-        }
+    if (speed <= speedLimit) {
+        return "Ok";
     } else {
-        // If speed is below or equal to the speed limit
-        console.log("Ok");
+        const demeritPoints = Math.floor((speed - speedLimit) / 5);
+        if (demeritPoints > demeritPointsLimit) {
+            return "License suspended";
+        } else {
+            return `Points: ${demeritPoints}`;
+        }
     }
 }
 
-// Call the function
-speedDetector();
+rl.question("Enter the speed of the vehicle: ", (input) => {
+    const speed = parseFloat(input);
+    console.log(computespeedDetector(speed));
+    rl.close();
+});
